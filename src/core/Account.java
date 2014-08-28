@@ -25,7 +25,7 @@ public class Account implements BitcoinPaymentListener{
 		this.balance = balance;
 	}
 	
-	public String getAddr(){
+	public String getAddress(){
 		return fundAddress;
 	}
 	
@@ -43,13 +43,19 @@ public class Account implements BitcoinPaymentListener{
 	 /* New transaction has arrived	or added confirmations */
 	public void transaction(Transaction transaction) {
 		for(Transaction tx : transactions)
-			if(tx.txId().equals(transaction.txId())){
+			if(tx.txId().equals(transaction.txId())){	/* Adding confirmations */
 				transactions.remove(tx);
 				break;
 			}
-
+		
 		transactions.add(transaction);
-		System.out.println(transactions);
+		
+		double newBalance = 0.0;
+		for(Transaction tx : transactions){
+			if(tx.confirmations() >= 6)
+				balance += tx.amount();
+		}
+		
+		this.balance = newBalance;
 	}
-
 }

@@ -19,7 +19,7 @@ public final class Auth {
 
 		Scanner cin;
 		try {
-			cin = new Scanner(new File("assets/Auth.priv"));
+			cin = new Scanner(new File("Auth.priv"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return;

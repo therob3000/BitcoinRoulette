@@ -1,0 +1,16 @@
+.green {
+	-fx-background-color: green;
+	-fx-border-color: white;
+}
+
+.red {
+	-fx-background-color: red;
+	-fx-border-color: white;
+}
+
+.black{
+	-fx-background-color: black;
+	-fx-border-color: white;
+
+}
+

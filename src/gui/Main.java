@@ -1,8 +1,6 @@
 package gui;
 	
-import java.io.IOException;
-
-import gui.account.TransactionsTableCtrl;
+import gui.account.AccountCtrl;
 import gui.game.GameCtrl;
 import core.Core;
 import javafx.application.Application;
@@ -12,30 +10,46 @@ import javafx.scene.Scene;
 
 
 public class Main extends Application {
+	private Scene gameScene;
+	private Scene accountScene;
+	private Stage stage;
+	
 	public void start(Stage stage) throws Exception {
-		foo();
-		if(1==1)return;
+		this.stage = stage;
 		Core core = new Core();
 		core.addPlayer();
-		stage.setTitle("Bitcoin Roulette Account");
-	    FXMLLoader l = new FXMLLoader(getClass().getResource("account/TransactionsTable.fxml"));
-	    l.setController(new TransactionsTableCtrl(core));
-	    Scene myScene = new Scene(l.load());
-	    stage.setScene(myScene);
+		
+		/* Game Screen */
+		FXMLLoader gameFxml = new FXMLLoader(getClass().getResource("game/Game.fxml"));
+		gameFxml.setController(new GameCtrl(core, this));	//TODO not make another core
+		gameScene = new Scene(gameFxml.load());
+		
+		/* Account Screen */
+	    FXMLLoader accountFxml = new FXMLLoader(getClass().getResource("account/Account.fxml"));
+	    accountFxml.setController(new AccountCtrl(core, this));
+	    accountScene = new Scene(accountFxml.load());
+	    
+	    stage.setWidth(1024);
+		stage.setHeight(700);
+	    stage.setTitle("Bitcoin Roulette");
+	    stage.setScene(gameScene);
 	    stage.show();
 	}
-	 
+	
+	public Stage getStage(){
+		return stage;
+	}
+	
+	public Scene getGameScene(){
+		return gameScene;
+	}
+	
+	public Scene getAccountScene(){
+		return accountScene;
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
-	public void foo() throws IOException{
-		Stage gameStage = new Stage();
-		gameStage.setTitle("Bitcoin Roulette");
-		FXMLLoader l = new FXMLLoader(getClass().getResource("game/Game.fxml"));
-		l.setController(new GameCtrl(new Core()));	//TODO not make another core
-		Scene myScene = new Scene(l.load());
-		gameStage.setScene(myScene);
-		gameStage.show();
-	}
 }
