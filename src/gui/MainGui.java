@@ -6,10 +6,11 @@ import core.Core;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 
 
-public class Main extends Application {
+public class MainGui extends Application {
 	private Scene gameScene;
 	private Scene accountScene;
 	private Stage stage;
@@ -23,6 +24,7 @@ public class Main extends Application {
 		FXMLLoader gameFxml = new FXMLLoader(getClass().getResource("game/Game.fxml"));
 		gameFxml.setController(new GameCtrl(core, this));	//TODO not make another core
 		gameScene = new Scene(gameFxml.load());
+		Node n = null;
 		
 		/* Account Screen */
 	    FXMLLoader accountFxml = new FXMLLoader(getClass().getResource("account/Account.fxml"));

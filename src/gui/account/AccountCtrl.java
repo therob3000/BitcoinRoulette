@@ -6,7 +6,7 @@ import org.controlsfx.control.action.AbstractAction;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 
-import gui.Main;
+import gui.MainGui;
 
 import com.azazar.bitcoin.jsonrpcclient.Bitcoin.Transaction;
 import com.azazar.bitcoin.jsonrpcclient.BitcoinException;
@@ -34,16 +34,16 @@ import core.Core;
 
 public class AccountCtrl {
 	private Core core;
-	private Main main;
+	private MainGui mainGui;
 	@FXML public Label balanceLabel;
 	@FXML public TableView<TransactionRow> tableView;
 	@FXML public TableColumn<TransactionRow, String> fromAddressCol;
 	@FXML public TableColumn<TransactionRow, Double> amountCol;
 	@FXML public TableColumn<TransactionRow, String> statusCol;
 	
-	public AccountCtrl(Core core, Main main){
+	public AccountCtrl(Core core, MainGui mainGui){
 		this.core = core;
-		this.main = main;
+		this.mainGui = mainGui;
 	}
 	
 	public void initialize(){
@@ -167,12 +167,10 @@ public class AccountCtrl {
 		
 		dlg.getActions().add(submitAction);
 		dlg.setContent(gridPane);
-		
 		Action response = dlg.show();
-		System.out.println(response);
 	}
 	
 	public void showGameScene(){
-		main.getStage().setScene(main.getGameScene());
+		mainGui.getStage().setScene(mainGui.getGameScene());
 	}
 }

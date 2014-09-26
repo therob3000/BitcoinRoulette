@@ -1,12 +1,17 @@
 package gui.game;
 
-import gui.Main;
+
+import java.util.HashMap;
+
+import gui.MainGui;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.ArcTo;
@@ -19,19 +24,56 @@ import core.Core;
 
 public class GameCtrl {
 	private Core core;
-	private Main main;
+	private MainGui mainGui;
+	public Coord[] numberToCoord = new Coord[37];
+	public HashMap<Coord, Coord[]> coordToSelection = new HashMap<Coord, Coord[]>();
+	@FXML public GridPane grid;
 	@FXML public ImageView wheel;
-	@FXML public ImageView board;
 	@FXML public Circle ball;
-	@FXML public Group group;
-	@FXML public GridPane gridPane;
 	
-	public GameCtrl(Core core, Main main){
+	public GameCtrl(Core core, MainGui mainGui){
 		this.core = core;
-		this.main = main;
+		this.mainGui = mainGui;
+		
+		/* 1st row */
+		int num = 3;
+		for(int i=1; i <= 23; i+=2){
+			numberToCoord[num] = new Coord(1,i);
+			num += 3;
+		}
+		
+		/* 2nd row */
+		num = 2;
+		for(int i=1; i <= 23; i+=2){
+			numberToCoord[num] = new Coord(3,i);
+			num += 3;
+		}
+		
+		/* 3rd row */
+		num = 1;
+		for(int i=1; i <= 23; i+=2){
+			numberToCoord[num] = new Coord(5,i);
+			num += 3;
+		}
+		
+		coordToSelection.put(new Coord(1,1), new Coord[]{numberToCoord[3]});
+		coordToSelection.put(new Coord(2,8), new Coord[]{numberToCoord[11],numberToCoord[12],numberToCoord[14],numberToCoord[15]});
 	}
 	
 	public void initialize(){
+		
+		for(Node n : grid.getChildren()){
+			n.setOnMouseEntered(new EventNumberEnter(this));
+			n.setOnMouseExited(new EventNumberExit(this));
+		}
+	}
+	
+	public Node getPaneFromCoord(int row, int col){
+		for(Node n : grid.getChildren()){
+			if(GridPane.getRowIndex(n) == row && GridPane.getColumnIndex(n) == col)
+				return n;
+		}
+		return null;
 	}
 
 	 private Path createCirclePath(double centerX, double centerY, double radiusX, double radiusY) {
@@ -66,6 +108,6 @@ public class GameCtrl {
 	 
 
 	public void showAccountScene(){
-		main.getStage().setScene(main.getAccountScene());
+		mainGui.getStage().setScene(mainGui.getAccountScene());
 	}
 }

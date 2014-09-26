@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -7,12 +8,12 @@
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" style="-fx-background-image: url('gui/images/felt.jpg'); -fx-background-color: green;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fill="WHITE" layoutX="143.0" layoutY="110.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Bitcoin Roulette Account" AnchorPane.bottomAnchor="577.50048828125" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="139.724609375" AnchorPane.topAnchor="60.80419921875">
+      <Text fill="WHITE" layoutX="141.0" layoutY="220.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="2.0" text="Bitcoin Roulette Account" AnchorPane.bottomAnchor="467.50048828125" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="141.724609375" AnchorPane.topAnchor="170.80419921875">
          <font>
             <Font name="System Bold" size="53.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="374.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance: ">
+      <Text fill="WHITE" layoutX="372.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance: ">
          <font>
             <Font size="42.0" />
          </font>
@@ -45,10 +46,15 @@
                </font></Button>
          </children>
       </VBox>
-      <Label fx:id="balanceLabel" layoutX="569.0" layoutY="122.0" text="0.0 BTC" textFill="WHITE">
+      <Label fx:id="balanceLabel" layoutX="567.0" layoutY="232.0" text="1.337 BTC" textFill="WHITE">
          <font>
             <Font size="42.0" />
          </font>
       </Label>
+      <ImageView fitHeight="150.0" fitWidth="900.0" layoutX="237.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/chips.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

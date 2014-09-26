@@ -12,7 +12,7 @@ public class Account implements BitcoinPaymentListener{
 	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	
 	public Account(String fundAddress){
-		balance = 0;
+		balance = 1.337;
 		this.fundAddress = fundAddress;
 		System.out.println(fundAddress);
 	}
