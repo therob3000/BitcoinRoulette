@@ -35,32 +35,68 @@ public class GameCtrl {
 		this.core = core;
 		this.mainGui = mainGui;
 		
-		/* 1st row */
-		int num = 3;
-		for(int i=1; i <= 23; i+=2){
-			numberToCoord[num] = new Coord(1,i);
-			num += 3;
-		}
-		
-		/* 2nd row */
-		num = 2;
-		for(int i=1; i <= 23; i+=2){
-			numberToCoord[num] = new Coord(3,i);
-			num += 3;
-		}
-		
-		/* 3rd row */
-		num = 1;
-		for(int i=1; i <= 23; i+=2){
-			numberToCoord[num] = new Coord(5,i);
-			num += 3;
-		}
-		
-		coordToSelection.put(new Coord(1,1), new Coord[]{numberToCoord[3]});
-		coordToSelection.put(new Coord(2,8), new Coord[]{numberToCoord[11],numberToCoord[12],numberToCoord[14],numberToCoord[15]});
 	}
 	
+	
 	public void initialize(){
+		
+		/* Get coordinate for each number */
+		int num = 0;
+		int row = 5;
+		int col = 1;
+		while(++num <= 36){
+			numberToCoord[num] = new Coord(row, col);
+			if(row == 1){
+				col += 2;
+				row = 5;
+			} else {
+				row -= 2;
+			}
+		}
+		
+		/* Each number selects itself */
+		for(Coord c : numberToCoord){
+			coordToSelection.put(c, new Coord[]{c});
+		}
+		
+		/* Top and bottom selectors for whole column */
+		for(col = 1; col <=23; col+=2){
+			Coord[] coords = new Coord[]{
+					new Coord(1,col),
+					new Coord(3,col),
+					new Coord(5,col)
+			};
+			coordToSelection.put(new Coord(0,col), coords);
+			coordToSelection.put(new Coord(6,col), coords);
+		}
+		
+		/* Top and bottom selectors for double column */
+		for(col = 2; col <=22; col+=2){
+			Coord[] coords = new Coord[]{
+					new Coord(1,col-1),
+					new Coord(1,col+1),
+					new Coord(3,col-1),
+					new Coord(3,col+1),
+					new Coord(5,col-1),
+					new Coord(5,col+1)
+				};
+			coordToSelection.put(new Coord(0,col), coords);
+			coordToSelection.put(new Coord(6,col), coords);
+		}
+		
+		/* Four selectors */
+		for(int r : new int[]{2,4}){
+			for(int c = 2; c <= 22; c+=2){
+				coordToSelection.put(new Coord(r, c), new Coord[]{new Coord(r-1, c-1), new Coord(r-1, c+1), new Coord(r+1,c+1), new Coord(r+1,c-1)});
+			}
+		}
+		
+		/* Two selectors */
+		for(int r : new int[]{2,4}){
+			for(int c = 1; c <= 23; c+=2){
+				coordToSelection.put(new Coord(r, c), new Coord[]{new Coord(r-1, c), new Coord(r+1, c)});
+			}
+		}
 		
 		for(Node n : grid.getChildren()){
 			n.setOnMouseEntered(new EventNumberEnter(this));
