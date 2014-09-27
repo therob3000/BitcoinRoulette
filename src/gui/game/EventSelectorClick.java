@@ -1,15 +1,16 @@
 package gui.game;
 
+import core.Bet;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-public class EventNumberExit implements EventHandler<Event>{
+public class EventSelectorClick implements EventHandler<Event>{
 
 	private GameCtrl gameCtrl;
 	
-	public EventNumberExit(GameCtrl gameCtrl) {
+	public EventSelectorClick(GameCtrl gameCtrl) {
 		this.gameCtrl = gameCtrl;
 	}
 	
@@ -21,9 +22,7 @@ public class EventNumberExit implements EventHandler<Event>{
 		
 		Coord[] selection = gameCtrl.coordToSelection.get(new Coord(row, col));
 		if(selection != null){
-			for(Coord c : selection){
-				gameCtrl.getPaneFromCoord(c.row, c.col).setOpacity(1);
-			}
+			gameCtrl.getBets().add(new Bet(12.34, 4));
 		}
 	}
 }

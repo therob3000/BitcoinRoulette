@@ -12,7 +12,7 @@ public class Account implements BitcoinPaymentListener{
 	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	
 	public Account(String fundAddress){
-		balance = 1.337;
+		balance = 1234;
 		this.fundAddress = fundAddress;
 		System.out.println(fundAddress);
 	}
@@ -29,10 +29,6 @@ public class Account implements BitcoinPaymentListener{
 		return fundAddress;
 	}
 	
-	public String prettyPrintBalance(){
-		return String.format("%1$,.4f", balance);
-	}
-
 	public void block(String blockHash) {
 		return; 	/* Dont care about new blocks */
 	}

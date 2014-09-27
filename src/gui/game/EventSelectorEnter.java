@@ -5,11 +5,11 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-public class EventNumberEnter implements EventHandler<Event>{
+public class EventSelectorEnter implements EventHandler<Event>{
 
 	private GameCtrl gameCtrl;
 	
-	public EventNumberEnter(GameCtrl gameCtrl) {
+	public EventSelectorEnter(GameCtrl gameCtrl) {
 		this.gameCtrl = gameCtrl;
 	}
 	

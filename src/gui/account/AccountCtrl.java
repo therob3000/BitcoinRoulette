@@ -51,6 +51,7 @@ public class AccountCtrl {
 		amountCol.setCellValueFactory(new PropertyValueFactory<TransactionRow, Double>("amount"));
 		statusCol.setCellValueFactory(new PropertyValueFactory<TransactionRow, String>("status"));
 		tableView.setPlaceholder(new Text("No transactions"));
+		refresh(new ActionEvent());
 	}
 
 	public void refresh(ActionEvent e){
@@ -63,7 +64,7 @@ public class AccountCtrl {
 					t.confirmations() >= 6 ? "Confirmed" : t.confirmations() + " confirmations"));
 		}
 		
-		balanceLabel.setText(core.getCurrentPlayer().getAccount().getBalance() + " BTC");
+		balanceLabel.setText(String.format("%.8f฿", core.getCurrentPlayer().getAccount().getBalance()));
 	}
 	
 	public void fundAccount(){
