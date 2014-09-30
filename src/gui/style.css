@@ -5,12 +5,9 @@
 
 .red {
 	-fx-background-color: red;
-	-fx-border-color: white;
 }
 
 .black{
-	-fx-background-color: black;
-	-fx-border-color: white;
-
+	-fx-background-color: #191919;
 }
 

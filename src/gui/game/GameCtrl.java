@@ -2,9 +2,15 @@ package gui.game;
 
 
 import gui.MainGui;
+import gui.game.listeners.ChipClickListener;
+import gui.game.listeners.SelectorClickListener;
+import gui.game.listeners.SelectorEnterListener;
+import gui.game.listeners.SelectorExitListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
@@ -15,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.Circle;
@@ -30,10 +37,11 @@ public class GameCtrl {
 	private Core core;
 	private MainGui mainGui;
 	public Coord[] numberToCoord = new Coord[37];
+	public HashMap<Coord, Integer> coordToNumber = new HashMap<Coord, Integer>();
 	public HashMap<Coord, Coord[]> coordToSelection = new HashMap<Coord, Coord[]>();
 	private ArrayList<Bet> bets = new ArrayList<Bet>();
 	private int[] chipAmounts = new int[]{1,2,3,4,5};
-	private int currChip = -1;
+	public int currChip = -1;
 	
 	@FXML public GridPane grid;
 	@FXML public ImageView wheel;
@@ -43,13 +51,12 @@ public class GameCtrl {
 	@FXML public ImageView redChip;
 	@FXML public ImageView greenChip;
 	@FXML public ImageView blackChip;
-	
+	@FXML public AnchorPane boardPane;
 	
 	public GameCtrl(Core core, MainGui mainGui){
 		this.core = core;
 		this.mainGui = mainGui;
 	}
-	
 	
 	public void initialize(){
 		/* Get coordinate for each number */
@@ -57,7 +64,9 @@ public class GameCtrl {
 		int row = 5;
 		int col = 1;
 		while(++num <= 36){
-			numberToCoord[num] = new Coord(row, col);
+			Coord c = new Coord(row, col);
+			numberToCoord[num] = c;
+			coordToNumber.put(c, num);
 			if(row == 1){
 				col += 2;
 				row = 5;
@@ -103,104 +112,54 @@ public class GameCtrl {
 			}
 		}
 		
-		/* Two selectors */
+		/* Two selectors (vertical) */
 		for(int r : new int[]{2,4}){
 			for(int c = 1; c <= 23; c+=2){
 				coordToSelection.put(new Coord(r, c), new Coord[]{new Coord(r-1, c), new Coord(r+1, c)});
 			}
 		}
 		
+		/* Two selectors (horizontal) */
+		for(int r : new int[]{1,3,5}){
+			for(int c = 2; c <= 22; c+=2){
+				coordToSelection.put(new Coord(r, c), new Coord[]{new Coord(r, c-1), new Coord(r, c+1)});
+			}
+		}
+		
 		/* 1-12 selector */
-		coordToSelection.put(new Coord(7,1), new Coord[]{
-			numberToCoord[1],
-			numberToCoord[2],
-			numberToCoord[3],
-			numberToCoord[4],
-			numberToCoord[5],
-			numberToCoord[6],
-			numberToCoord[7],
-			numberToCoord[8],
-			numberToCoord[9],
-			numberToCoord[10],
-			numberToCoord[11],
-			numberToCoord[12]
-		});
+		Coord[] ray = new Coord[12];
+		for(int i=1; i <= 12; i++){
+			ray[i-1] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(7,1), ray);
 		
 		/* 13-24 selector */
-		coordToSelection.put(new Coord(7,9), new Coord[]{
-			numberToCoord[13],
-			numberToCoord[14],
-			numberToCoord[15],
-			numberToCoord[16],
-			numberToCoord[17],
-			numberToCoord[18],
-			numberToCoord[19],
-			numberToCoord[20],
-			numberToCoord[21],
-			numberToCoord[22],
-			numberToCoord[23],
-			numberToCoord[24]
-		});
+		ray = new Coord[12];
+		for(int i=13; i <= 24; i++){
+			ray[i-13] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(7,9), ray);
 		
 		/* 25-36 selector */
-		coordToSelection.put(new Coord(7,17), new Coord[]{
-			numberToCoord[25],
-			numberToCoord[26],
-			numberToCoord[27],
-			numberToCoord[28],
-			numberToCoord[29],
-			numberToCoord[30],
-			numberToCoord[31],
-			numberToCoord[32],
-			numberToCoord[33],
-			numberToCoord[34],
-			numberToCoord[35],
-			numberToCoord[36]
-		});
+		ray = new Coord[12];
+		for(int i=25; i <= 36; i++){
+			ray[i-25] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(7,17), ray);
 		
 		/* 1-18 selector */
-		coordToSelection.put(new Coord(8,1), new Coord[]{
-			numberToCoord[1],
-			numberToCoord[2],
-			numberToCoord[3],
-			numberToCoord[4],
-			numberToCoord[5],
-			numberToCoord[6],
-			numberToCoord[7],
-			numberToCoord[8],
-			numberToCoord[9],
-			numberToCoord[10],
-			numberToCoord[11],
-			numberToCoord[12],
-			numberToCoord[13],
-			numberToCoord[14],
-			numberToCoord[15],
-			numberToCoord[16],
-			numberToCoord[17],
-			numberToCoord[18]
-		});
+		ray = new Coord[18];
+		for(int i=1; i <= 18; i++){
+			ray[i-1] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(8,1), ray);
 		
 		/* 19-36 selector */
-		coordToSelection.put(new Coord(8,21), new Coord[]{
-			numberToCoord[19],
-			numberToCoord[20],
-			numberToCoord[21],
-			numberToCoord[22],
-			numberToCoord[23],
-			numberToCoord[24],
-			numberToCoord[25],
-			numberToCoord[26],
-			numberToCoord[27],
-			numberToCoord[28],
-			numberToCoord[29],
-			numberToCoord[30],
-			numberToCoord[31],
-			numberToCoord[32],
-			numberToCoord[33],
-			numberToCoord[34],
-			numberToCoord[35],
-			numberToCoord[36]
-		});
+		ray = new Coord[18];
+		for(int i=19; i <= 36; i++){
+			ray[i-19] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(8,21), ray);
 
 		/* Parity selector */
 		Coord[] evenCoords = new Coord[18];
@@ -209,7 +168,7 @@ public class GameCtrl {
 		int oIdx = 0;
 		
 		for(int i=1; i <= 36; i++){
-			if(i %2 == 0)
+			if(i % 2 == 0)
 				evenCoords[eIdx++] = numberToCoord[i];
 			else
 				oddCoords[oIdx++] = numberToCoord[i];
@@ -217,49 +176,21 @@ public class GameCtrl {
 		coordToSelection.put(new Coord(8,5), evenCoords);
 		coordToSelection.put(new Coord(8,17), oddCoords);
 		
-		/* Red selector */
-		coordToSelection.put(new Coord(8,9), new Coord[]{
-			numberToCoord[1],
-			numberToCoord[3],
-			numberToCoord[5],
-			numberToCoord[7],
-			numberToCoord[9],
-			numberToCoord[12],
-			numberToCoord[14],
-			numberToCoord[16],
-			numberToCoord[18],
-			numberToCoord[19],
-			numberToCoord[21],
-			numberToCoord[23],
-			numberToCoord[25],
-			numberToCoord[27],
-			numberToCoord[30],
-			numberToCoord[32],
-			numberToCoord[34],
-			numberToCoord[36]
-		});
+		/* Red/Black selector */
+		List<Integer> redNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
+		Coord [] reds = new Coord[18];
+		Coord [] blacks = new Coord[18];
+		int redIdx = 0;
+		int blackIdx = 0;
 		
-		/* Black selector */
-		coordToSelection.put(new Coord(8,13), new Coord[]{
-			numberToCoord[2],
-			numberToCoord[4],
-			numberToCoord[6],
-			numberToCoord[8],
-			numberToCoord[10],
-			numberToCoord[11],
-			numberToCoord[13],
-			numberToCoord[15],
-			numberToCoord[17],
-			numberToCoord[20],
-			numberToCoord[22],
-			numberToCoord[24],
-			numberToCoord[26],
-			numberToCoord[28],
-			numberToCoord[29],
-			numberToCoord[31],
-			numberToCoord[33],
-			numberToCoord[35]
-		});
+		for(int i=1; i <= 36; i++){
+			if(redNums.contains(i))
+				reds[redIdx++] = numberToCoord[i];
+			else
+				blacks[blackIdx++] = numberToCoord[i];
+		}
+		coordToSelection.put(new Coord(8,9), reds);
+		coordToSelection.put(new Coord(8,13), blacks);
 		
 		/* '1st','2nd','3rd' column selectors */
 		Coord[] first = new Coord[12];
@@ -280,14 +211,14 @@ public class GameCtrl {
 		coordToSelection.put(new Coord(1,24), third);
 		
 		for(Node n : grid.getChildren()){
-			n.setOnMouseEntered(new EventSelectorEnter(this));
-			n.setOnMouseExited(new EventSelectorExit(this));
-			n.setOnMouseClicked(new EventSelectorClick(this));
+			n.setOnMouseEntered(new SelectorEnterListener(this));
+			n.setOnMouseExited(new SelectorExitListener(this));
+			n.setOnMouseClicked(new SelectorClickListener(this));
 		}
 		
 		balanceText.setText(String.format("%.8f฿", core.getCurrentPlayer().getAccount().getBalance()));
 		
-		EventHandler<MouseEvent> chipClick = new EventChipClick();
+		EventHandler<MouseEvent> chipClick = new ChipClickListener(this);
 		whiteChip.setOnMouseClicked(chipClick);
 		redChip.setOnMouseClicked(chipClick);
 		greenChip.setOnMouseClicked(chipClick);
