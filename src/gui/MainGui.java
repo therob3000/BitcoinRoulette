@@ -17,6 +17,7 @@ public class MainGui extends Application {
 	
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
+		stage.setResizable(false);
 		Core core = new Core();
 		core.addPlayer();
 		

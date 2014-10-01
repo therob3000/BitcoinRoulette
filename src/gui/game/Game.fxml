@@ -22,7 +22,7 @@
                                     <Image url="@../images/wheel.png" />
                                  </image>
                               </ImageView>
-                              <Circle fx:id="ball" fill="WHITE" layoutX="170.0" layoutY="68.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fx:id="ball" fill="WHITE" layoutX="170.0" layoutY="68.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </AnchorPane>
                       <AnchorPane fx:id="boardPane" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="670.0" style="-fx-background-color: rgba(0, 0, 0, 0);">

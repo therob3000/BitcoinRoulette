@@ -19,16 +19,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import core.Bet;
 import core.Core;
@@ -58,6 +61,7 @@ public class GameCtrl {
 		this.mainGui = mainGui;
 	}
 	
+	/* Called after scene graph loaded */
 	public void initialize(){
 		/* Get coordinate for each number */
 		int num = 0;
@@ -233,35 +237,43 @@ public class GameCtrl {
 		return null;
 	}
 
-	 private Path createCirclePath(double centerX, double centerY, double radiusX, double radiusY) {
-	        ArcTo arcTo = new ArcTo();
-	        arcTo.setX(centerX - radiusX + 1);
-	        arcTo.setY(centerY - radiusY);
-	        arcTo.setSweepFlag(false);
-	        arcTo.setLargeArcFlag(true);
-	        arcTo.setRadiusX(radiusX);
-	        arcTo.setRadiusY(radiusY);
+	 private Path createCirclePath(double centerX, double centerY, double radiusX, double radiusY, int spins) {
+	        ArcTo full360 = new ArcTo(radiusX, radiusY, 0, centerX - radiusX + 1, centerY - radiusY, true, false);
 	        
 	        Path path = new Path();
-		    path.getElements().add(new MoveTo(centerX - radiusX, centerY - radiusY));
-		    path.getElements().add(arcTo);
-	        path.getElements().add(new ClosePath());
+	        for(int i=0; i < spins; i++){
+			    path.getElements().add(new MoveTo(centerX - radiusX, centerY - radiusY));
+			    path.getElements().add(full360);
+			    path.getElements().add(new ClosePath());
+	        }
+	        path.getElements().add(new MoveTo(centerX - radiusX, centerY - radiusY));
+	        
+	        //TODO define dynamic newX, newY
+	        double newX = centerX + radiusX/2;
+	        double newY = centerY + radiusY;
+	        ArcTo partialSpin = new ArcTo(radiusX, radiusY, 0, newX, newY, true, false);
+	        path.getElements().add(partialSpin);
+	        
 	        
 	        return path;
 	    }
 
 	 public void spin(ActionEvent e){
-		 int cycles = 20;
-		 PathTransition spin = new PathTransition(Duration.millis(10000).divide(cycles), createCirclePath(115, 115, 110, 110), ball);
-		 spin.setCycleCount(cycles);
+		 long durationMillis = 14000;
+		 int cycles = 16;
+		 Path p = createCirclePath(115, 115, 110, 110, cycles);
+		 PathTransition spin = new PathTransition(Duration.millis(durationMillis), p, ball);
 		 spin.setInterpolator(Interpolator.LINEAR);
 		 spin.play();
 		 
-		 int deg = 360*5 + (int)(Math.random() * 360);	//Between 5 and 6 spins
-		 RotateTransition rt = new RotateTransition(Duration.millis(10000), wheel);
+		
+		 /* Spin Wheel*/
+		 int deg = 360*3 + (int)(Math.random() * 360);	//Between 3 and 4 spins
+		 RotateTransition rt = new RotateTransition(Duration.millis(durationMillis), wheel);
 		 rt.setByAngle(deg);
 		 rt.play();
-	}
+
+	 }
 	 
 
 	public void showAccountScene(){
