@@ -14,18 +14,18 @@ public class Core {
 
 	public Core(){
 		
-		Auth.authenticate();
-		
-		try {
-			bitcoin = new BitcoinJSONRPCClient("http://localhost:"+ 18332);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return;
-		}
-		
-		
-		bitcoinListener = new BitcoinListener(bitcoin);
-		new Thread(bitcoinListener).start();
+//		Auth.authenticate();
+//		
+//		try {
+//			bitcoin = new BitcoinJSONRPCClient("http://localhost:"+ 18332);
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//			return;
+//		}
+//		
+//		
+//		bitcoinListener = new BitcoinListener(bitcoin);
+//		new Thread(bitcoinListener).start();
 		players = new ArrayList<Player>();
 	}
 	
@@ -38,9 +38,10 @@ public class Core {
 	}
 
 	public void addPlayer() throws BitcoinException {
-		String address = bitcoin.getNewAddress("roulette");
+//		String address = bitcoin.getNewAddress("roulette");
+		String address = "ASdfasdf";
 		Account account = new Account(address);
 		players.add(new Player(account));
-		bitcoinListener.addListener(address,account);
+//		bitcoinListener.addListener(address,account);
 	}
 }
