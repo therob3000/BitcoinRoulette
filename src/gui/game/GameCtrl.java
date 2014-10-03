@@ -6,16 +6,20 @@ import gui.game.listeners.ChipClickListener;
 import gui.game.listeners.SelectorClickListener;
 import gui.game.listeners.SelectorEnterListener;
 import gui.game.listeners.SelectorExitListener;
+import gui.game.listeners.SpinFinishedListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,8 +46,8 @@ public class GameCtrl {
 	public Coord[] numberToCoord = new Coord[37];
 	public HashMap<Coord, Integer> coordToNumber = new HashMap<Coord, Integer>();
 	public HashMap<Coord, Coord[]> coordToSelection = new HashMap<Coord, Coord[]>();
-	private ArrayList<Bet> bets = new ArrayList<Bet>();
-	private int[] chipAmounts = new int[]{1,2,3,4,5};
+	public ArrayList<Bet> bets = new ArrayList<Bet>();
+	public double[] chipAmounts = new double[]{.334, 2, 3, 4, 5};
 	public int currChip = -1;
 
 	@FXML public GridPane grid;
@@ -183,17 +187,18 @@ public class GameCtrl {
 		coordToSelection.put(new Coord(8,17), oddCoords);
 
 		/* Red/Black selector */
-		List<Integer> redNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
+		List<Integer> blackNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
 		Coord [] reds = new Coord[18];
 		Coord [] blacks = new Coord[18];
 		int redIdx = 0;
 		int blackIdx = 0;
 
 		for(int i=1; i <= 36; i++){
-			if(redNums.contains(i))
-				reds[redIdx++] = numberToCoord[i];
-			else
+			if(blackNums.contains(i))
 				blacks[blackIdx++] = numberToCoord[i];
+				
+			else
+				reds[redIdx++] = numberToCoord[i];
 		}
 		coordToSelection.put(new Coord(8,9), reds);
 		coordToSelection.put(new Coord(8,13), blacks);
@@ -267,7 +272,7 @@ public class GameCtrl {
 			path.getElements().add(new ArcTo(radius, radius, 0, x, y, false, false));
 		}
 
-		long durationMillis = 12000;
+		long durationMillis = 5000;
 		PathTransition spin = new PathTransition(Duration.millis(durationMillis), path, ball);
 		spin.setInterpolator(Interpolator.LINEAR);
 		spin.play();
@@ -283,9 +288,15 @@ public class GameCtrl {
 		
 		int[] order = new int[]{0,26,3,35,12,28,7,29,18,22,9,31,14,20,1,33,16,24,5,10,23,8,30,11,36,13,27,6,34,17,25,2,21,4,19,15,32};
 		int[] ballPosToOffset = new int[]{-1, 1, 3, 5, 7, 10, 13, 14, 17, 19, 21, 24, 26, 28, 31, 33, 35};
-		System.out.println(order[(wheelPos + ballPosToOffset[ballPos]) % 37]);
+		int result = order[(wheelPos + ballPosToOffset[ballPos]) % 37];
 		
+		for(Bet b : bets){
+			b.resultOfSpin = result;
+		}
+		
+		rt.setOnFinished(new SpinFinishedListener(this, result));
 	}
+	
 
 	Scanner cin = new Scanner(System.in);
 	int[] data = new int[44];
@@ -301,7 +312,14 @@ public class GameCtrl {
 		//		mainGui.getStage().setScene(mainGui.getAccountScene());
 	}
 
-	public ArrayList<Bet> getBets() {
-		return bets;
+
+	public void addBet(double betAmount, int payout, List<Coord> winningCoord) {
+		
+		HashSet<Integer> winningNumbers = new HashSet<Integer>();
+		for(Coord c: winningCoord){
+			winningNumbers.add(coordToNumber.get(c));
+		}
+		
+		bets.add(new Bet(betAmount, payout, winningNumbers));
 	}
 }

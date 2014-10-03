@@ -3,13 +3,16 @@ package core;
 import java.util.HashSet;
 
 public class Bet {
+	public Player player;
 	private int payout;
 	private double amount;
-	private HashSet<Integer> numbers = new HashSet<Integer>();
+	public int resultOfSpin = -1;
+	public HashSet<Integer> winning = new HashSet<Integer>();
 
-	public Bet(double amount, int payout){
+	public Bet(double amount, int payout, HashSet<Integer> winning){
 		this.payout = payout;
 		this.amount = amount;
+		this.winning = winning;
 	}
 	
 	public int getPayout(){
@@ -20,8 +23,8 @@ public class Bet {
 		return amount;
 	}
 	
-	public boolean cameTrue(int result) {
-		return numbers.contains(result);
+	public boolean cameTrue(){
+		return winning.contains(resultOfSpin);
 	}
 	
 }

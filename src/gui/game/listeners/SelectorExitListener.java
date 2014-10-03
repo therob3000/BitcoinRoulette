@@ -15,7 +15,7 @@ import javafx.scene.layout.Pane;
 public class SelectorExitListener implements EventHandler<Event>{
 
 	private GameCtrl gameCtrl;
-	private List<Integer> redNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
+	private List<Integer> blackNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
 	
 	public SelectorExitListener(GameCtrl gameCtrl) {
 		this.gameCtrl = gameCtrl;
@@ -34,9 +34,7 @@ public class SelectorExitListener implements EventHandler<Event>{
 				n.setEffect(new ColorAdjust());
 				n.setStyle("-fx-border-color: transparent;\n");
 				
-				if(redNums.contains(gameCtrl.coordToNumber.get(c))){
-					
-				} else {
+				if(blackNums.contains(gameCtrl.coordToNumber.get(c))){
 					n.setStyle("-fx-background-color: #191919;\n");
 				}
 			}

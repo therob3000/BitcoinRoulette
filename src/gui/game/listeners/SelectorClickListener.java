@@ -1,6 +1,7 @@
 package gui.game.listeners;
 
 import java.util.Arrays;
+import java.util.List;
 
 import gui.game.Coord;
 import gui.game.GameCtrl;
@@ -37,6 +38,7 @@ public class SelectorClickListener implements EventHandler<MouseEvent>{
 		if(Arrays.asList(offBoard).contains(coord))
 			return;
 		
+		
 		String url = "";
 		switch(gameCtrl.currChip){
 			case -1:	/* No chip selected */
@@ -62,7 +64,15 @@ public class SelectorClickListener implements EventHandler<MouseEvent>{
 		
 		Coord[] selection = gameCtrl.coordToSelection.get(coord);
 		if(selection != null){
-			gameCtrl.getBets().add(new Bet(12.34, 4));
+			
+			double betAmount = gameCtrl.chipAmounts[gameCtrl.currChip];
+			gameCtrl.currChip = -1;
+			int payout = (36/selection.length) - 1;
+			
+			System.out.printf("Bet: %f Payout: %d to 1\n", betAmount, payout);
+			
+			List<Coord> winning = Arrays.asList(gameCtrl.coordToSelection.get(coord));
+			gameCtrl.addBet(betAmount, payout, winning);
 		}
 	}
 }

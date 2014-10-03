@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
 public class SelectorEnterListener implements EventHandler<Event>{
 
 	private GameCtrl gameCtrl;
-	private List<Integer> redNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
+	private List<Integer> blackNums = Arrays.asList(1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36);
 	
 	public SelectorEnterListener(GameCtrl gameCtrl) {
 		this.gameCtrl = gameCtrl;
@@ -33,14 +33,13 @@ public class SelectorEnterListener implements EventHandler<Event>{
 			for(Coord c : selection){
 				Node n = gameCtrl.getPaneFromCoord(c.row, c.col);
 				
-				if(redNums.contains(gameCtrl.coordToNumber.get(c))){
+				if(blackNums.contains(gameCtrl.coordToNumber.get(c))){
+					n.setStyle("-fx-background-color: black;\n");
+					n.setStyle("-fx-border-color: white;\n");
+				} else {
 					ColorAdjust colorAdjust = new ColorAdjust();
 					colorAdjust.setBrightness(0.2);
 					n.setEffect(colorAdjust);
-					n.setStyle("-fx-border-color: white;\n");
-					
-				} else {
-					n.setStyle("-fx-background-color: black;\n");
 					n.setStyle("-fx-border-color: white;\n");
 				}
 			}
