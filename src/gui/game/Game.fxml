@@ -659,6 +659,11 @@
       
                                  </children>
                               </GridPane>
+                              <ImageView fx:id="floatingChip" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/white_chip.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>
@@ -691,22 +696,27 @@
                            <children>
                               <HBox layoutX="353.0" layoutY="16.0" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="whiteChip" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="whiteChip" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/white_chip.png" />
                                        </image>
                                     </ImageView>
-                                    <ImageView fx:id="redChip" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="redChip" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/red_chip.png" />
                                        </image>
                                     </ImageView>
-                                    <ImageView fx:id="greenChip" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="blueChip" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/blue_chip.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="greenChip" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/green_chip.png" />
                                        </image>
                                     </ImageView>
-                                    <ImageView fx:id="blackChip" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="blackChip" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/black_chip.png" />
                                        </image>
@@ -723,6 +733,15 @@
                                     <Font size="31.0" />
                                  </font>
                               </Text>
+                              <HBox layoutX="343.0" layoutY="102.0" prefHeight="47.0" prefWidth="416.0">
+                                 <children>
+                                    <TextField fx:id="whiteChipAmt" prefHeight="25.0" prefWidth="83.0" />
+                                    <TextField fx:id="redChipAmt" prefHeight="25.0" prefWidth="83.0" />
+                                    <TextField fx:id="blueChipAmt" prefHeight="25.0" prefWidth="83.0" />
+                                    <TextField fx:id="greenChipAmt" prefHeight="25.0" prefWidth="83.0" />
+                                    <TextField fx:id="blackChipAmt" prefHeight="25.0" prefWidth="83.0" />
+                                 </children>
+                              </HBox>
                            </children>
                         </AnchorPane>
                      </children>

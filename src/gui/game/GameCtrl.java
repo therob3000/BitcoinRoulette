@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -41,33 +42,63 @@ import core.Bet;
 import core.Core;
 
 public class GameCtrl {
-	private Core core;
-	private MainGui mainGui;
-	public Coord[] numberToCoord = new Coord[37];
-	public HashMap<Coord, Integer> coordToNumber = new HashMap<Coord, Integer>();
-	public HashMap<Coord, Coord[]> coordToSelection = new HashMap<Coord, Coord[]>();
-	public ArrayList<Bet> bets = new ArrayList<Bet>();
-	public double[] chipAmounts = new double[]{.334, 2, 3, 4, 5};
-	public int currChip = -1;
-
+	@FXML public AnchorPane boardPane;
 	@FXML public GridPane grid;
 	@FXML public ImageView wheel;
 	@FXML public Circle ball;
 	@FXML public Text balanceText;
 	@FXML public ImageView whiteChip;
 	@FXML public ImageView redChip;
+	@FXML public ImageView blueChip;
 	@FXML public ImageView greenChip;
 	@FXML public ImageView blackChip;
-	@FXML public AnchorPane boardPane;
+	@FXML public TextField whiteChipAmt;
+	@FXML public TextField redChipAmt;
+	@FXML public TextField blueChipAmt;
+	@FXML public TextField greenChipAmt;
+	@FXML public TextField blackChipAmt;
+	@FXML public ImageView floatingChip;
+	
+	
+	private Core core;
+	private MainGui mainGui;
+	public Coord[] numberToCoord = new Coord[37];
+	public HashMap<Coord, Integer> coordToNumber = new HashMap<Coord, Integer>();
+	public HashMap<Coord, Coord[]> coordToSelection = new HashMap<Coord, Coord[]>();
+	public ArrayList<Bet> bets = new ArrayList<Bet>();
+	public double[] chipAmounts = new double[]{.05, .1, .2, .3, 4};
+	public int currChip = -1;
+	public ImageView[] chips;
 
 	public GameCtrl(Core core, MainGui mainGui){
 		this.core = core;
 		this.mainGui = mainGui;
 	}
 
-	/* Called after scene graph loaded */
+	/* Called after scene graph loads */
 	public void initialize(){
+		
+		grid.setOnMouseMoved(new EventHandler<MouseEvent>() {
 
+			@Override
+			public void handle(MouseEvent event) {
+				
+				floatingChip.setX(event.getSceneX()-390);
+				floatingChip.setY(event.getSceneY()-40);
+			}
+		});
+		
+		this.chips = new ImageView[]{	whiteChip,
+										redChip,
+										blueChip,
+										greenChip,
+										blackChip};
+		
+		whiteChipAmt.setText(chipAmounts[0]+"");
+		redChipAmt.setText(chipAmounts[1]+"");
+		blueChipAmt.setText(chipAmounts[2]+"");
+		greenChipAmt.setText(chipAmounts[3]+"");
+		blackChipAmt.setText(chipAmounts[4]+"");
 
 		/* Get coordinate for each number */
 		int num = 0;
@@ -231,6 +262,7 @@ public class GameCtrl {
 		EventHandler<MouseEvent> chipClick = new ChipClickListener(this);
 		whiteChip.setOnMouseClicked(chipClick);
 		redChip.setOnMouseClicked(chipClick);
+		blueChip.setOnMouseClicked(chipClick);
 		greenChip.setOnMouseClicked(chipClick);
 		blackChip.setOnMouseClicked(chipClick);
 		
@@ -289,6 +321,7 @@ public class GameCtrl {
 		int[] order = new int[]{0,26,3,35,12,28,7,29,18,22,9,31,14,20,1,33,16,24,5,10,23,8,30,11,36,13,27,6,34,17,25,2,21,4,19,15,32};
 		int[] ballPosToOffset = new int[]{-1, 1, 3, 5, 7, 10, 13, 14, 17, 19, 21, 24, 26, 28, 31, 33, 35};
 		int result = order[(wheelPos + ballPosToOffset[ballPos]) % 37];
+		System.out.println("Result: " + result);
 		
 		for(Bet b : bets){
 			b.resultOfSpin = result;
@@ -298,18 +331,8 @@ public class GameCtrl {
 	}
 	
 
-	Scanner cin = new Scanner(System.in);
-	int[] data = new int[44];
-//	int finalPos = 0;
 	public void showAccountScene(){
-//		
-//		double deg = ((360.0/37.0) * finalPos);
-//		wheel.setRotate(deg);
-//		
-//		data[finalPos++] = cin.nextInt();
-//		System.out.println(Arrays.toString(data));
-//		return;
-		//		mainGui.getStage().setScene(mainGui.getAccountScene());
+		mainGui.getStage().setScene(mainGui.getAccountScene());
 	}
 
 

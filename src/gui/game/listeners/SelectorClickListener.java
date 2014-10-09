@@ -6,6 +6,7 @@ import java.util.List;
 import gui.game.Coord;
 import gui.game.GameCtrl;
 import javafx.event.EventHandler;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -50,9 +51,12 @@ public class SelectorClickListener implements EventHandler<MouseEvent>{
 				url = "gui/images/red_chip.png";
 				break;
 			case 2:
-				url = "gui/images/green_chip.png";
+				url = "gui/images/blue_chip.png";
 				break;
 			case 3:
+				url = "gui/images/green_chip.png";
+				break;
+			case 4:
 				url = "gui/images/black_chip.png";
 				break;
 		}
@@ -74,5 +78,10 @@ public class SelectorClickListener implements EventHandler<MouseEvent>{
 			List<Coord> winning = Arrays.asList(gameCtrl.coordToSelection.get(coord));
 			gameCtrl.addBet(betAmount, payout, winning);
 		}
+		
+		for(ImageView i : gameCtrl.chips){
+			i.setEffect(new ColorAdjust());
+		}
+		
 	}
 }
