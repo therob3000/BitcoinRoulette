@@ -62,9 +62,11 @@ public class SelectorClickListener implements EventHandler<MouseEvent>{
 		}
 		
 		ImageView chip = new ImageView(new Image(url, 40.0, 40.0, true, false));
-		gameCtrl.boardPane.getChildren().add(chip);
+		chip.setMouseTransparent(true);
 		chip.setX(event.getSceneX()-372);
 		chip.setY(event.getSceneY()-22);
+		gameCtrl.chipsOnBoard.getChildren().add(chip);
+		gameCtrl.floatingChip.setVisible(false);
 		
 		Coord[] selection = gameCtrl.coordToSelection.get(coord);
 		if(selection != null){

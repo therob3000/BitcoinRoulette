@@ -13,22 +13,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 
-import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -57,7 +52,6 @@ public class GameCtrl {
 	@FXML public TextField blueChipAmt;
 	@FXML public TextField greenChipAmt;
 	@FXML public TextField blackChipAmt;
-	@FXML public ImageView floatingChip;
 	
 	
 	private Core core;
@@ -69,6 +63,8 @@ public class GameCtrl {
 	public double[] chipAmounts = new double[]{.05, .1, .2, .3, 4};
 	public int currChip = -1;
 	public ImageView[] chips;
+	public ImageView floatingChip = new ImageView();
+	public Group chipsOnBoard = new Group();
 
 	public GameCtrl(Core core, MainGui mainGui){
 		this.core = core;
@@ -78,15 +74,36 @@ public class GameCtrl {
 	/* Called after scene graph loads */
 	public void initialize(){
 		
-		grid.setOnMouseMoved(new EventHandler<MouseEvent>() {
-
+		floatingChip.setMouseTransparent(true);
+		floatingChip.setFitHeight(40);
+		floatingChip.setFitWidth(40);
+		boardPane.getChildren().add(chipsOnBoard);
+		boardPane.getChildren().add(floatingChip);
+		
+		grid.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
-				
-				floatingChip.setX(event.getSceneX()-390);
-				floatingChip.setY(event.getSceneY()-40);
+			public void handle(MouseEvent arg0) {
+				if(currChip != -1){
+					floatingChip.setVisible(true);
+				}
 			}
 		});
+		
+		grid.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				floatingChip.setVisible(false);
+			}
+		});
+		
+		grid.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				floatingChip.setX(event.getSceneX()-370);
+				floatingChip.setY(event.getSceneY()-23);
+			}
+		});
+		
 		
 		this.chips = new ImageView[]{	whiteChip,
 										redChip,

@@ -6,6 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.*?>
 
 <SplitPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="700.0" prefWidth="1024.0" style="-fx-background-image: url('gui/images/felt.jpg'); -fx-background-color: green;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <items>
@@ -659,11 +660,6 @@
       
                                  </children>
                               </GridPane>
-                              <ImageView fx:id="floatingChip" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/white_chip.png" />
-                                 </image>
-                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>

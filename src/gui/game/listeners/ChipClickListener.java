@@ -33,9 +33,10 @@ public class ChipClickListener  implements EventHandler<MouseEvent>{
 				gameCtrl.currChip = 4;
 				break;
 		}
+		gameCtrl.floatingChip.setImage(gameCtrl.chips[gameCtrl.currChip].getImage());
 		
-		 ColorAdjust colorDesaturate = new ColorAdjust();
-		 colorDesaturate.setSaturation(-0.4);
+		ColorAdjust colorDesaturate = new ColorAdjust();
+		colorDesaturate.setSaturation(-0.4);
 		 
 		for(int i=0; i < gameCtrl.chips.length; i++){
 			if(i != gameCtrl.currChip){
